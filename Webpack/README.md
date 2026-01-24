@@ -28,17 +28,32 @@ Webpack/
 │   │   └── dashboard_main.js
 │   └── public/
 │       └── index.html
-└── task_2/
+├── task_2/
+│   ├── package.json
+│   ├── webpack.config.js
+│   ├── assets/
+│   │   └── holberton-logo.jpg
+│   ├── css/
+│   │   └── main.css
+│   ├── js/
+│   │   └── dashboard_main.js
+│   └── public/
+│       └── index.html
+└── task_3/
     ├── package.json
     ├── webpack.config.js
     ├── assets/
     │   └── holberton-logo.jpg
-    ├── css/
-    │   └── main.css
-    ├── js/
-    │   └── dashboard_main.js
-    └── public/
-        └── index.html
+    └── modules/
+        ├── header/
+        │   ├── header.js
+        │   └── header.css
+        ├── body/
+        │   ├── body.js
+        │   └── body.css
+        └── footer/
+            ├── footer.js
+            └── footer.css
 ```
 
 ## Tâches
@@ -163,6 +178,61 @@ npm run build
 **Utilisation :**
 
 Ouvrir `public/index.html` dans un navigateur.
+
+---
+
+### Task 3 - Dev servers, modules, and tree shaking
+
+Configuration avancée avec serveur de développement, modules et optimisation.
+
+**Objectifs :**
+- Configurer webpack-dev-server sur le port 8564
+- Diviser le code en trois modules (header, body, footer)
+- Utiliser html-webpack-plugin pour générer index.html
+- Utiliser clean-webpack-plugin pour nettoyer le dossier build
+- Activer le source mapping inline
+- Implémenter le code splitting avec splitChunks
+
+**Installation :**
+
+```bash
+cd task_3
+npm install
+```
+
+**Serveur de développement :**
+
+```bash
+npm run start-dev
+```
+
+Ouvre automatiquement http://localhost:8564/
+
+**Build production :**
+
+```bash
+npm run build
+```
+
+**Modules :**
+
+| Module | Contenu |
+|--------|---------|
+| header | Logo + titre H1 "Holberton Dashboard" |
+| body | Bouton + compteur de clics avec debounce |
+| footer | Copyright |
+
+**Plugins utilisés :**
+
+| Plugin | Fonction |
+|--------|----------|
+| html-webpack-plugin | Génère automatiquement index.html |
+| clean-webpack-plugin | Nettoie le dossier public avant chaque build |
+
+**Optimisations :**
+
+- `inline-source-map` : permet de débugger directement dans le fichier source
+- `splitChunks` : sépare jQuery et Lodash dans des chunks partagés
 
 ---
 
