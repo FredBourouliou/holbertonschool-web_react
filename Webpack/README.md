@@ -15,11 +15,18 @@ Ce projet permet d'apprendre les bases de Webpack, un bundler de modules JavaScr
 ```
 Webpack/
 ├── README.md
-└── task_0/
+├── task_0/
+│   ├── package.json
+│   ├── src/
+│   │   └── index.js
+│   └── dist/
+│       └── index.html
+└── task_1/
     ├── package.json
-    ├── src/
-    │   └── index.js
-    └── dist/
+    ├── webpack.config.js
+    ├── js/
+    │   └── dashboard_main.js
+    └── public/
         └── index.html
 ```
 
@@ -58,6 +65,51 @@ Le fichier `src/index.js` ajoute trois paragraphes à la page :
 **Utilisation :**
 
 Ouvrir `dist/index.html` dans un navigateur pour voir le résultat.
+
+---
+
+### Task 1 - Learning how to use Webpack with a config file
+
+Utilisation de Webpack avec un fichier de configuration personnalisé.
+
+**Objectifs :**
+- Installer webpack (devDependency), jQuery et Lodash (dependencies)
+- Créer un fichier de configuration `webpack.config.js`
+- Utiliser un script `npm run build` pour exécuter Webpack
+- Implémenter une fonction anti-spam avec Lodash debounce
+
+**Installation :**
+
+```bash
+cd task_1
+npm install
+```
+
+**Build :**
+
+```bash
+npm run build
+```
+
+**Fonctionnalités :**
+
+Le fichier `js/dashboard_main.js` :
+- Affiche "Holberton Dashboard" et "Dashboard data for the students"
+- Ajoute un bouton "Click here to get started"
+- Compte les clics sur le bouton avec protection anti-spam (debounce 500ms)
+- Affiche "Copyright - Holberton School"
+
+**Configuration Webpack :**
+
+- Mode : production
+- Entrée : `js/dashboard_main.js`
+- Sortie : `public/bundle.js`
+
+**Utilisation :**
+
+Ouvrir `public/index.html` dans un navigateur pour tester le compteur de clics.
+
+---
 
 ## Auteur
 
