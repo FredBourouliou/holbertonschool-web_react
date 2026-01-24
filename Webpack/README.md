@@ -21,9 +21,20 @@ Webpack/
 │   │   └── index.js
 │   └── dist/
 │       └── index.html
-└── task_1/
+├── task_1/
+│   ├── package.json
+│   ├── webpack.config.js
+│   ├── js/
+│   │   └── dashboard_main.js
+│   └── public/
+│       └── index.html
+└── task_2/
     ├── package.json
     ├── webpack.config.js
+    ├── assets/
+    │   └── holberton-logo.jpg
+    ├── css/
+    │   └── main.css
     ├── js/
     │   └── dashboard_main.js
     └── public/
@@ -108,6 +119,50 @@ Le fichier `js/dashboard_main.js` :
 **Utilisation :**
 
 Ouvrir `public/index.html` dans un navigateur pour tester le compteur de clics.
+
+---
+
+### Task 2 - Adding CSS & Images
+
+Ajout du support CSS et images dans Webpack.
+
+**Objectifs :**
+- Installer css-loader, style-loader, file-loader et image-webpack-loader
+- Configurer Webpack pour supporter les fichiers CSS et images
+- Optimiser les images avec image-webpack-loader
+- Créer un logo avec une image de fond
+
+**Installation :**
+
+```bash
+cd task_2
+npm install
+```
+
+**Build :**
+
+```bash
+npm run build
+```
+
+**Fonctionnalités :**
+
+- Logo Holberton (200x200px) affiché en haut de page
+- Compteur de clics positionné à droite du bouton, en gras
+- Images optimisées automatiquement lors du build
+
+**Loaders utilisés :**
+
+| Loader | Fonction |
+|--------|----------|
+| css-loader | Interprète les imports CSS |
+| style-loader | Injecte le CSS dans le DOM |
+| file-loader | Gère les fichiers (images, fonts) |
+| image-webpack-loader | Optimise les images |
+
+**Utilisation :**
+
+Ouvrir `public/index.html` dans un navigateur.
 
 ---
 
