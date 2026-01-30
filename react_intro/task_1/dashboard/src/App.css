@@ -1,0 +1,27 @@
+.App-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 3px solid #e1003c;
+}
+
+.App-header img {
+  height: 200px;
+}
+
+.App-header h1 {
+  margin-left: 1rem;
+  font-size: 2rem;
+}
+
+.App-body {
+  min-height: 60vh;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.App-footer {
+  border-top: 3px solid #e1003c;
+  text-align: center;
+  font-style: italic;
+  padding: 1rem;
+}
