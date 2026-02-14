@@ -10,6 +10,6 @@ test('Footer renders Copyright {year} - Holberton School', () => {
   render(<Footer />);
   const year = getCurrentYear();
   expect(
-    screen.getByText(`Copyright ${year} - Holberton School`)
+    screen.getByText(`Copyright ${year} - Holberton School main dashboard`)
   ).toBeInTheDocument();
 });
