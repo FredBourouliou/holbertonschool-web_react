@@ -1,0 +1,16 @@
+function Login() {
+  return (
+    <div className="App-body min-h-[60vh] p-4 mt-4">
+      <p>Login to access the full dashboard</p>
+      <div className="flex items-center gap-2 mt-2 max-[912px]:flex-col max-[912px]:items-start">
+        <label htmlFor="email">Email:</label>
+        <input type="email" id="email" name="email" className="border border-gray-300 px-2 py-1 max-[912px]:w-full" />
+        <label htmlFor="password">Password:</label>
+        <input type="password" id="password" name="password" className="border border-gray-300 px-2 py-1 max-[912px]:w-full" />
+        <button>OK</button>
+      </div>
+    </div>
+  );
+}
+
+export default Login;
