@@ -4,7 +4,7 @@ class NotificationItem extends PureComponent {
   render() {
     const { type, html, value, markAsRead, id } = this.props;
     const colorClass = type === 'urgent' ? 'text-urgent-notification-item' : 'text-default-notification-item';
-    const responsiveClass = `${colorClass} max-[912px]:text-xl max-[912px]:border-b max-[912px]:border-black max-[912px]:p-3 max-[912px]:w-full`;
+    const responsiveClass = `${colorClass} pl-1 max-[912px]:text-[20px] max-[912px]:w-full max-[912px]:border-b max-[912px]:border-black max-[912px]:p-[10px_8px]`;
 
     if (html) {
       return (

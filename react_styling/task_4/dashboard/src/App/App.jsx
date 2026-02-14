@@ -29,23 +29,25 @@ class App extends Component {
     ];
 
     return (
-      <div className="flex flex-col min-h-screen p-4 max-[912px]:p-2 relative">
-        <div className="root-notifications absolute right-0 top-0 z-10 w-full">
-          <Notifications displayDrawer={true} notifications={notificationsList} />
+      <div className="relative px-3 min-h-screen flex flex-col">
+        <div className="root-notifications absolute top-0 right-0 z-10">
+          <Notifications notifications={notificationsList} />
         </div>
-        <Header />
-        {isLoggedIn ? (
-          <BodySectionWithMarginBottom title="Course list">
-            <CourseList courses={coursesList} />
-          </BodySectionWithMarginBottom>
-        ) : (
-          <BodySectionWithMarginBottom title="Log in to continue">
-            <Login />
-          </BodySectionWithMarginBottom>
-        )}
-        <BodySection title="News from the School">
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, asperiores architecto blanditiis fuga doloribus sit illum aliquid ea distinctio minus accusantium, impedit quo voluptatibus ut magni dicta. Recusandae, quia dicta?</p>
-        </BodySection>
+        <div className="flex-1">
+          <Header />
+          {isLoggedIn ? (
+            <BodySectionWithMarginBottom title="Course list">
+              <CourseList courses={coursesList} />
+            </BodySectionWithMarginBottom>
+          ) : (
+            <BodySectionWithMarginBottom title="Log in to continue">
+              <Login />
+            </BodySectionWithMarginBottom>
+          )}
+          <BodySection title="News from the School">
+            <p>ipsum Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, asperiores architecto blanditiis fuga doloribus sit illum aliquid ea distinctio minus accusantium, impedit quo voluptatibus ut magni dicta. Recusandae, quia dicta?</p>
+          </BodySection>
+        </div>
         <Footer />
       </div>
     );
