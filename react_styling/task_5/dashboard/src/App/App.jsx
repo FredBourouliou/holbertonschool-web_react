@@ -29,9 +29,9 @@ class App extends Component {
     ];
 
     return (
-      <div className="flex flex-col min-h-screen p-4 max-[912px]:p-2">
-        <div className="root-notifications">
-          <Notifications notifications={notificationsList} />
+      <div className="flex flex-col min-h-screen p-4 max-[912px]:p-2 relative">
+        <div className="root-notifications absolute right-0 top-0 z-10 w-full">
+          <Notifications displayDrawer={true} notifications={notificationsList} />
         </div>
         <Header />
         {isLoggedIn ? (

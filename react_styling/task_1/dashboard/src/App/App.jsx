@@ -32,7 +32,7 @@ class App extends Component {
     return (
       <div className="flex flex-col min-h-screen">
         <div className="root-notifications">
-          <Notifications displayDrawer={false} notifications={notificationsList} />
+          <Notifications displayDrawer={true} notifications={notificationsList} />
         </div>
         <Header />
         {isLoggedIn ? (
