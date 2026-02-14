@@ -2,9 +2,9 @@ import holbertonLogo from '../assets/holberton-logo.jpg';
 
 function Header() {
   return (
-    <div className="App-header flex items-center border-b-3 border-main">
-      <img src={holbertonLogo} alt="holberton logo" className="h-[200px]" />
-      <h1 className="text-main ml-4 text-[2rem]">School Dashboard</h1>
+    <div className="App-header flex items-center py-2">
+      <img src={holbertonLogo} alt="holberton logo" className="h-60 pointer-events-none" />
+      <h1 className="font-bold text-main text-5xl">School Dashboard</h1>
     </div>
   );
 }

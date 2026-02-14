@@ -10,14 +10,14 @@ class NotificationItem extends PureComponent {
         <li
           data-notification-type={type}
           dangerouslySetInnerHTML={html}
-          className={colorClass}
+          className={`${colorClass} pl-1`}
           onClick={() => markAsRead(id)}
         ></li>
       );
     }
 
     return (
-      <li data-notification-type={type} className={colorClass} onClick={() => markAsRead(id)}>
+      <li data-notification-type={type} className={`${colorClass} pl-1`} onClick={() => markAsRead(id)}>
         {value}
       </li>
     );

@@ -2,8 +2,8 @@ import { getCurrentYear, getFooterCopy } from '../utils/utils';
 
 function Footer() {
   return (
-    <div className="App-footer border-t-3 border-main text-center italic p-4 mt-auto">
-      <p>Copyright {getCurrentYear()} - {getFooterCopy(true)}</p>
+    <div className="App-footer flex justify-center items-center border-t-4 border-main h-16 mt-auto">
+      <p className="italic text-xl">Copyright {getCurrentYear()} - {getFooterCopy(true)}</p>
     </div>
   );
 }

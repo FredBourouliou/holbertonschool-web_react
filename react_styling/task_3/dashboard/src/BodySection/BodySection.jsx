@@ -1,7 +1,7 @@
 function BodySection({ title, children }) {
   return (
-    <div className="bodySection p-4">
-      <h2 className="text-xl font-bold">{title}</h2>
+    <div className="bodySection mb-5">
+      <h2 className="font-bold text-xl mt-8">{title}</h2>
       {children}
     </div>
   );

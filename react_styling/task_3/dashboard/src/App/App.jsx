@@ -29,23 +29,25 @@ class App extends Component {
     ];
 
     return (
-      <div className="flex flex-col min-h-screen relative">
-        <div className="root-notifications absolute right-0 top-0 z-10 w-full">
+      <div className="relative px-3 min-h-screen flex flex-col">
+        <div className="root-notifications absolute top-0 right-0 z-10">
           <Notifications displayDrawer={true} notifications={notificationsList} />
         </div>
-        <Header />
-        {isLoggedIn ? (
-          <BodySectionWithMarginBottom title="Course list">
-            <CourseList courses={coursesList} />
-          </BodySectionWithMarginBottom>
-        ) : (
-          <BodySectionWithMarginBottom title="Log in to continue">
-            <Login />
-          </BodySectionWithMarginBottom>
-        )}
-        <BodySection title="News from the School">
-          <p>Holberton School News goes here</p>
-        </BodySection>
+        <div className="flex-1">
+          <Header />
+          {isLoggedIn ? (
+            <BodySectionWithMarginBottom title="Course list">
+              <CourseList courses={coursesList} />
+            </BodySectionWithMarginBottom>
+          ) : (
+            <BodySectionWithMarginBottom title="Log in to continue">
+              <Login />
+            </BodySectionWithMarginBottom>
+          )}
+          <BodySection title="News from the School">
+            <p>Holberton School news goes here</p>
+          </BodySection>
+        </div>
         <Footer />
       </div>
     );
