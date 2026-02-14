@@ -9,7 +9,10 @@ class Notifications extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.notifications.length !== this.props.notifications.length;
+    return (
+      nextProps.notifications.length !== this.props.notifications.length ||
+      nextProps.displayDrawer !== this.props.displayDrawer
+    );
   }
 
   markAsRead(id) {
@@ -21,11 +24,11 @@ class Notifications extends Component {
 
     return (
       <>
-        <div className="notification-title text-right">
-          <p>Your notifications</p>
+        <div className="notification-title text-right mb-2">
+          <p className="cursor-pointer bg-[#fff8f8] py-2 px-4 inline-block">Your notifications</p>
         </div>
         {displayDrawer && (
-          <div className="notification-items border-2 border-dashed border-main p-1.5 relative w-1/4">
+          <div className="notification-items border-2 border-dashed border-main p-1.5 relative w-1/4 ml-auto mb-4">
             <button
               aria-label="Close"
               className="absolute top-4 right-4 bg-transparent border-none cursor-pointer"

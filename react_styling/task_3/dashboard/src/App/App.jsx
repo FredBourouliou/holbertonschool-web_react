@@ -1,4 +1,4 @@
-import { Component, Fragment } from 'react';
+import { Component } from 'react';
 import Notifications from '../Notifications/Notifications';
 import Header from '../Header/Header';
 import Login from '../Login/Login';
@@ -31,7 +31,7 @@ class App extends Component {
     return (
       <div className="flex flex-col min-h-screen">
         <div className="root-notifications">
-          <Notifications notifications={notificationsList} />
+          <Notifications displayDrawer={false} notifications={notificationsList} />
         </div>
         <Header />
         {isLoggedIn ? (
