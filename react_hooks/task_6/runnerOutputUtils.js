@@ -16,3 +16,18 @@ export function runJestChecker(specFile, cwd) {
     process.stdout.write('NOK');
   }
 }
+
+export function runLintChecker(scriptFile, cwd) {
+  const dir = cwd || dirname(fileURLToPath(import.meta.url));
+  const scriptPath = resolve(dir, scriptFile);
+  try {
+    execSync(`bash "${scriptPath}"`, {
+      cwd: dir,
+      stdio: ['pipe', 'pipe', 'pipe'],
+      timeout: 25000,
+    });
+    process.stdout.write('OK');
+  } catch {
+    process.stdout.write('NOK');
+  }
+}
