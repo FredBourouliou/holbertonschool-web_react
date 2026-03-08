@@ -11,7 +11,7 @@ import { getLatestNotification } from '../utils/utils';
 import AppContext from '../Context/context';
 
 function App() {
-  const [displayDrawer, setDisplayDrawer] = useState(true);
+  const [displayDrawer, setDisplayDrawer] = useState(false);
   const [user, setUser] = useState({
     email: '',
     password: '',

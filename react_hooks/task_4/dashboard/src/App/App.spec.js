@@ -34,7 +34,7 @@ afterEach(() => {
 async function renderApp() {
   render(<App />);
   await waitFor(() => {
-    expect(screen.getAllByRole('listitem')).toHaveLength(3);
+    expect(mockAxios.get).toHaveBeenCalledWith('/notifications.json');
   });
 }
 
@@ -93,7 +93,10 @@ test('by default, renders the Login form (user is not logged in)', async () => {
 test('notifications data is fetched when App loads initially', async () => {
   await renderApp();
   expect(mockAxios.get).toHaveBeenCalledWith('/notifications.json');
-  expect(screen.getAllByRole('listitem')).toHaveLength(3);
+  fireEvent.click(screen.getByText(/your notifications/i));
+  await waitFor(() => {
+    expect(screen.getAllByRole('listitem')).toHaveLength(3);
+  });
   expect(screen.getByText(/new course available/i)).toBeInTheDocument();
   expect(screen.getByText(/new resume available/i)).toBeInTheDocument();
   expect(screen.getByText(/urgent requirement/i)).toBeInTheDocument();
@@ -165,33 +168,40 @@ test('after logging in then logging out, renders Login form again', async () => 
   expect(screen.queryByText(/available courses/i)).not.toBeInTheDocument();
 });
 
-test('default state: displayDrawer is true, notification drawer is visible with fetched notifications', async () => {
+test('default state: displayDrawer is false, notification drawer is hidden', async () => {
   await renderApp();
-  expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
   expect(screen.getByText(/your notifications/i)).toBeInTheDocument();
+  expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
+});
+
+test('handleDisplayDrawer: clicking "Your notifications" opens the drawer', async () => {
+  await renderApp();
+  expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
+  fireEvent.click(screen.getByText(/your notifications/i));
+  await waitFor(() => {
+    expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
+  });
   expect(screen.getAllByRole('listitem')).toHaveLength(3);
 });
 
 test('handleHideDrawer: clicking close button hides the drawer', async () => {
   await renderApp();
-  expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: /close/i }));
-  expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
-});
-
-test('handleDisplayDrawer: clicking "Your notifications" reopens the drawer', async () => {
-  await renderApp();
-  fireEvent.click(screen.getByRole('button', { name: /close/i }));
-  expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
   fireEvent.click(screen.getByText(/your notifications/i));
-  expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
+  });
+  fireEvent.click(screen.getByRole('button', { name: /close/i }));
+  expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
 });
 
 test('clicking a notification removes it and logs the message', async () => {
   const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
   await renderApp();
 
-  expect(screen.getAllByRole('listitem')).toHaveLength(3);
+  fireEvent.click(screen.getByText(/your notifications/i));
+  await waitFor(() => {
+    expect(screen.getAllByRole('listitem')).toHaveLength(3);
+  });
 
   fireEvent.click(screen.getByText(/new course available/i));
 
