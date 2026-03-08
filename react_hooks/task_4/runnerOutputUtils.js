@@ -11,9 +11,9 @@ export function runJestChecker(specFile, cwd) {
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 25000,
     });
-    process.stdout.write('OK');
+    console.log('OK');
   } catch {
-    process.stdout.write('NOK');
+    console.log('NOK');
   }
 }
 
@@ -24,8 +24,8 @@ export function runLintChecker(options) {
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 25000,
     });
-    process.stdout.write('OK');
+    console.log('OK');
   } catch {
-    process.stdout.write('NOK');
+    console.log('NOK');
   }
 }
