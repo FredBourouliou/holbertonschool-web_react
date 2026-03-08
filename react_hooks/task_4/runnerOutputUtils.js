@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 export function runJestChecker(specFile, cwd) {
   const dir = cwd || dirname(fileURLToPath(import.meta.url));
-  const specPath = resolve(dir, specFile);
+  const specPath = typeof specFile === 'string' ? resolve(dir, specFile) : specFile;
   try {
     execSync(`npx jest --no-coverage --no-verbose "${specPath}"`, {
       cwd: dir,
@@ -17,12 +17,10 @@ export function runJestChecker(specFile, cwd) {
   }
 }
 
-export function runLintChecker(scriptFile, cwd) {
-  const dir = cwd || dirname(fileURLToPath(import.meta.url));
-  const scriptPath = resolve(dir, scriptFile);
+export function runLintChecker(options) {
   try {
-    execSync(`bash "${scriptPath}"`, {
-      cwd: dir,
+    const script = typeof options === 'string' ? options : 'lint_bash.sh';
+    execSync(`bash ${script}`, {
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 25000,
     });
