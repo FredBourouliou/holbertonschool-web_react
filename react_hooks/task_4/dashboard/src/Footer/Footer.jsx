@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { getCurrentYear, getFooterCopy } from '../utils/utils';
-import newContext from '../Context/context';
+import AppContext from '../Context/context';
 
 function Footer() {
-  const { user } = useContext(newContext);
+  const { user } = useContext(AppContext);
 
   return (
     <div className="App-footer" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderTop: '4px solid #e1003c', height: '4rem', marginTop: 'auto' }}>

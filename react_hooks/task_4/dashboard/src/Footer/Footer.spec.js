@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import Footer from './Footer';
-import newContext from '../Context/context';
+import AppContext from '../Context/context';
 import { getCurrentYear } from '../utils/utils';
 
 test('Footer renders without crashing', () => {
@@ -27,9 +27,9 @@ test('Contact us link is displayed when user is logged in', () => {
   };
 
   render(
-    <newContext.Provider value={contextValue}>
+    <AppContext.Provider value={contextValue}>
       <Footer />
-    </newContext.Provider>
+    </AppContext.Provider>
   );
 
   expect(screen.getByText(/contact us/i)).toBeInTheDocument();

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Header from './Header';
-import newContext from '../Context/context';
+import AppContext from '../Context/context';
 
 test('Header renders without crashing', () => {
   render(<Header />);
@@ -33,9 +33,9 @@ test('logoutSection is rendered when user isLoggedIn is true', () => {
   };
 
   render(
-    <newContext.Provider value={contextValue}>
+    <AppContext.Provider value={contextValue}>
       <Header />
-    </newContext.Provider>
+    </AppContext.Provider>
   );
 
   expect(screen.getByText(/welcome/i)).toBeInTheDocument();
@@ -52,9 +52,9 @@ test('clicking logout link calls the logOut function from context', async () => 
   };
 
   render(
-    <newContext.Provider value={contextValue}>
+    <AppContext.Provider value={contextValue}>
       <Header />
-    </newContext.Provider>
+    </AppContext.Provider>
   );
 
   await user.click(screen.getByText(/logout/i));

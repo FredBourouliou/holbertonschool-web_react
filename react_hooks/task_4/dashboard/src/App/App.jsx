@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import axios from 'axios';
 import Notifications from '../Notifications/Notifications';
 import Header from '../Header/Header';
 import Login from '../Login/Login';
@@ -6,14 +7,7 @@ import Footer from '../Footer/Footer';
 import CourseList from '../CourseList/CourseList';
 import BodySection from '../BodySection/BodySection';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
-import { getLatestNotification } from '../utils/utils';
-import newContext from '../Context/context';
-
-const notificationsList = [
-  { id: 1, type: 'default', value: 'New course available' },
-  { id: 2, type: 'urgent', value: 'New resume available' },
-  { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
-];
+import AppContext from '../Context/context';
 
 const coursesList = [
   { id: 1, name: 'ES6', credit: 60 },
@@ -28,7 +22,19 @@ function App() {
     password: '',
     isLoggedIn: false,
   });
-  const [notifications, setNotifications] = useState(notificationsList);
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    axios.get('/notifications.json')
+      .then((response) => {
+        const data = response.data.map((n) => ({
+          ...n,
+          html: n.html ? { __html: n.html } : undefined,
+        }));
+        setNotifications(data);
+      })
+      .catch(() => {});
+  }, []);
 
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
@@ -62,7 +68,7 @@ function App() {
   const contextValue = { user, logOut };
 
   return (
-    <newContext.Provider value={contextValue}>
+    <AppContext.Provider value={contextValue}>
       <div style={{ position: 'relative', padding: '0 0.75rem', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <div className="root-notifications" style={{ position: 'absolute', top: 0, right: 0, zIndex: 10 }}>
           <Notifications
@@ -90,7 +96,7 @@ function App() {
         </div>
         <Footer />
       </div>
-    </newContext.Provider>
+    </AppContext.Provider>
   );
 }
 

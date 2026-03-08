@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import holbertonLogo from '../assets/holberton-logo.jpg';
-import newContext from '../Context/context';
+import AppContext from '../Context/context';
 
 function Header() {
-  const { user, logOut } = useContext(newContext);
+  const { user, logOut } = useContext(AppContext);
 
   return (
     <>

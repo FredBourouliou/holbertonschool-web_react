@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import PropTypes from 'prop-types';
 import closeIcon from '../assets/close-icon.png';
 import NotificationItem from './NotificationItem';
 
@@ -71,5 +72,18 @@ function Notifications({
     </div>
   );
 }
+
+Notifications.propTypes = {
+  displayDrawer: PropTypes.bool,
+  notifications: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    type: PropTypes.string,
+    value: PropTypes.string,
+    html: PropTypes.shape({ __html: PropTypes.string }),
+  })),
+  handleDisplayDrawer: PropTypes.func,
+  handleHideDrawer: PropTypes.func,
+  markNotificationAsRead: PropTypes.func,
+};
 
 export default memo(Notifications);

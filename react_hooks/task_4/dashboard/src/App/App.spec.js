@@ -1,17 +1,41 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import axios from 'axios';
 import App from './App';
 
-test('renders h1 with text School dashboard', () => {
+jest.mock('axios');
+
+const mockNotifications = [
+  { id: 1, type: 'default', value: 'New course available' },
+  { id: 2, type: 'urgent', value: 'New resume available' },
+  { id: 3, type: 'urgent', html: '<strong>Urgent requirement</strong> - complete by EOD' },
+];
+
+beforeEach(() => {
+  axios.get.mockResolvedValue({ data: mockNotifications });
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+async function renderApp() {
   render(<App />);
+  await waitFor(() => {
+    expect(screen.getAllByRole('listitem')).toHaveLength(3);
+  });
+}
+
+test('renders h1 with text School dashboard', async () => {
+  await renderApp();
   const heading = screen.getByRole('heading', {
     name: /school dashboard/i,
   });
   expect(heading).toBeInTheDocument();
 });
 
-test('renders correct text in App-body and App-footer paragraphs', () => {
-  render(<App />);
+test('renders correct text in App-body and App-footer paragraphs', async () => {
+  await renderApp();
   expect(
     screen.getByText(/login to access the full dashboard/i)
   ).toBeInTheDocument();
@@ -20,34 +44,34 @@ test('renders correct text in App-body and App-footer paragraphs', () => {
   ).toBeInTheDocument();
 });
 
-test('renders an img element with holberton logo alt text', () => {
-  render(<App />);
+test('renders an img element with holberton logo alt text', async () => {
+  await renderApp();
   const img = screen.getByAltText(/holberton logo/i);
   expect(img).toBeInTheDocument();
 });
 
-test('renders 2 input elements for email and password', () => {
-  render(<App />);
+test('renders 2 input elements for email and password', async () => {
+  await renderApp();
   const emailInput = screen.getByRole('textbox', { name: /email/i });
   expect(emailInput).toBeInTheDocument();
   const passwordInput = screen.getByLabelText(/password/i);
   expect(passwordInput).toBeInTheDocument();
 });
 
-test('renders 2 label elements with text Email and Password', () => {
-  render(<App />);
+test('renders 2 label elements with text Email and Password', async () => {
+  await renderApp();
   expect(screen.getByText(/email/i)).toBeInTheDocument();
   expect(screen.getByText(/password/i)).toBeInTheDocument();
 });
 
-test('renders a button with the text OK', () => {
-  render(<App />);
+test('renders a button with the text OK', async () => {
+  await renderApp();
   const button = screen.getByRole('button', { name: /ok/i });
   expect(button).toBeInTheDocument();
 });
 
-test('by default, renders the Login form (user is not logged in)', () => {
-  render(<App />);
+test('by default, renders the Login form (user is not logged in)', async () => {
+  await renderApp();
   expect(
     screen.getByText(/login to access the full dashboard/i)
   ).toBeInTheDocument();
@@ -56,7 +80,7 @@ test('by default, renders the Login form (user is not logged in)', () => {
 
 test('after logging in, renders CourseList instead of Login', async () => {
   const user = userEvent.setup();
-  render(<App />);
+  await renderApp();
 
   const emailInput = screen.getByRole('textbox', { name: /email/i });
   const passwordInput = screen.getByLabelText(/password/i);
@@ -75,7 +99,7 @@ test('after logging in, renders CourseList instead of Login', async () => {
 
 test('after logging in then logging out, renders Login form again', async () => {
   const user = userEvent.setup();
-  render(<App />);
+  await renderApp();
 
   const emailInput = screen.getByRole('textbox', { name: /email/i });
   const passwordInput = screen.getByLabelText(/password/i);
@@ -96,32 +120,31 @@ test('after logging in then logging out, renders Login form again', async () => 
   expect(screen.queryByText(/available courses/i)).not.toBeInTheDocument();
 });
 
-test('default state: displayDrawer is true, notification drawer is visible', () => {
-  render(<App />);
+test('default state: displayDrawer is true, notification drawer is visible with fetched notifications', async () => {
+  await renderApp();
   expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
   expect(screen.getByText(/your notifications/i)).toBeInTheDocument();
+  expect(screen.getAllByRole('listitem')).toHaveLength(3);
 });
 
-test('handleHideDrawer: clicking close button hides the drawer', () => {
-  render(<App />);
+test('handleHideDrawer: clicking close button hides the drawer', async () => {
+  await renderApp();
   expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: /close/i }));
   expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
 });
 
-test('handleDisplayDrawer: clicking "Your notifications" reopens the drawer', () => {
-  render(<App />);
-  // Hide the drawer first
+test('handleDisplayDrawer: clicking "Your notifications" reopens the drawer', async () => {
+  await renderApp();
   fireEvent.click(screen.getByRole('button', { name: /close/i }));
   expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
-  // Reopen via "Your notifications"
   fireEvent.click(screen.getByText(/your notifications/i));
   expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
 });
 
-test('clicking a notification removes it and logs the message', () => {
+test('clicking a notification removes it and logs the message', async () => {
   const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-  render(<App />);
+  await renderApp();
 
   expect(screen.getAllByRole('listitem')).toHaveLength(3);
 
@@ -136,7 +159,7 @@ test('clicking a notification removes it and logs the message', () => {
 
 test('logIn updates user state with email, password, and isLoggedIn', async () => {
   const user = userEvent.setup();
-  render(<App />);
+  await renderApp();
 
   const emailInput = screen.getByRole('textbox', { name: /email/i });
   const passwordInput = screen.getByLabelText(/password/i);
@@ -147,17 +170,14 @@ test('logIn updates user state with email, password, and isLoggedIn', async () =
   const submitButton = screen.getByRole('button', { name: /ok/i });
   await user.click(submitButton);
 
-  // Verify isLoggedIn is true (CourseList rendered)
   expect(screen.getByText(/available courses/i)).toBeInTheDocument();
-  // Verify email is set (displayed in welcome section)
   expect(screen.getByText(/test@example.com/i)).toBeInTheDocument();
 });
 
 test('logOut resets user state: isLoggedIn false, email and password cleared', async () => {
   const user = userEvent.setup();
-  render(<App />);
+  await renderApp();
 
-  // Login first
   const emailInput = screen.getByRole('textbox', { name: /email/i });
   const passwordInput = screen.getByLabelText(/password/i);
 
@@ -169,11 +189,8 @@ test('logOut resets user state: isLoggedIn false, email and password cleared', a
 
   expect(screen.getByText(/test@example.com/i)).toBeInTheDocument();
 
-  // Logout
   await user.click(screen.getByText(/logout/i));
 
-  // Verify isLoggedIn is false (Login form shown)
   expect(screen.getByText(/login to access the full dashboard/i)).toBeInTheDocument();
-  // Verify email is cleared (no longer displayed)
   expect(screen.queryByText(/test@example.com/i)).not.toBeInTheDocument();
 });
