@@ -7,13 +7,8 @@ import Footer from '../Footer/Footer';
 import CourseList from '../CourseList/CourseList';
 import BodySection from '../BodySection/BodySection';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+import { getLatestNotification } from '../utils/utils';
 import AppContext from '../Context/context';
-
-const coursesList = [
-  { id: 1, name: 'ES6', credit: 60 },
-  { id: 2, name: 'Webpack', credit: 20 },
-  { id: 3, name: 'React', credit: 40 },
-];
 
 function App() {
   const [displayDrawer, setDisplayDrawer] = useState(true);
@@ -23,18 +18,47 @@ function App() {
     isLoggedIn: false,
   });
   const [notifications, setNotifications] = useState([]);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    axios.get('/notifications.json')
-      .then((response) => {
-        const data = response.data.map((n) => ({
-          ...n,
-          html: n.html ? { __html: n.html } : undefined,
-        }));
-        setNotifications(data);
-      })
-      .catch(() => {});
+    let cancelled = false;
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get('/notifications.json');
+        if (!cancelled) {
+          const data = response.data.map((n) => ({
+            ...n,
+            html: n.html ? { __html: getLatestNotification() } : undefined,
+          }));
+          setNotifications(data);
+        }
+      } catch (error) {
+        if (!cancelled) console.error(error);
+      }
+    };
+    fetchNotifications();
+    return () => { cancelled = true; };
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchCourses = async () => {
+      if (user.isLoggedIn) {
+        try {
+          const response = await axios.get('/courses.json');
+          if (!cancelled) {
+            setCourses(response.data);
+          }
+        } catch (error) {
+          if (!cancelled) console.error(error);
+        }
+      } else {
+        setCourses([]);
+      }
+    };
+    fetchCourses();
+    return () => { cancelled = true; };
+  }, [user]);
 
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
@@ -83,7 +107,7 @@ function App() {
           <Header />
           {user.isLoggedIn ? (
             <BodySectionWithMarginBottom title="Course list">
-              <CourseList courses={coursesList} />
+              <CourseList courses={courses} />
             </BodySectionWithMarginBottom>
           ) : (
             <BodySectionWithMarginBottom title="Log in to continue">

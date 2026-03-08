@@ -1,9 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import axios from 'axios';
+import mockAxios from 'jest-mock-axios';
 import App from './App';
-
-jest.mock('axios');
 
 const mockNotifications = [
   { id: 1, type: 'default', value: 'New course available' },
@@ -11,12 +9,26 @@ const mockNotifications = [
   { id: 3, type: 'urgent', html: '<strong>Urgent requirement</strong> - complete by EOD' },
 ];
 
+const mockCourses = [
+  { id: 1, name: 'ES6', credit: 60 },
+  { id: 2, name: 'Webpack', credit: 20 },
+  { id: 3, name: 'React', credit: 40 },
+];
+
 beforeEach(() => {
-  axios.get.mockResolvedValue({ data: mockNotifications });
+  mockAxios.get.mockImplementation((url) => {
+    if (url === '/notifications.json') {
+      return Promise.resolve({ data: mockNotifications });
+    }
+    if (url === '/courses.json') {
+      return Promise.resolve({ data: mockCourses });
+    }
+    return Promise.reject(new Error(`Unexpected URL: ${url}`));
+  });
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  mockAxios.reset();
 });
 
 async function renderApp() {
@@ -78,6 +90,35 @@ test('by default, renders the Login form (user is not logged in)', async () => {
   expect(screen.queryByText(/available courses/i)).not.toBeInTheDocument();
 });
 
+test('notifications data is fetched when App loads initially', async () => {
+  await renderApp();
+  expect(mockAxios.get).toHaveBeenCalledWith('/notifications.json');
+  expect(screen.getAllByRole('listitem')).toHaveLength(3);
+  expect(screen.getByText(/new course available/i)).toBeInTheDocument();
+  expect(screen.getByText(/new resume available/i)).toBeInTheDocument();
+  expect(screen.getByText(/urgent requirement/i)).toBeInTheDocument();
+});
+
+test('courses data is fetched when user state changes to logged in', async () => {
+  const user = userEvent.setup();
+  await renderApp();
+
+  const emailInput = screen.getByRole('textbox', { name: /email/i });
+  const passwordInput = screen.getByLabelText(/password/i);
+
+  await user.type(emailInput, 'test@example.com');
+  await user.type(passwordInput, 'longpassword');
+
+  const submitButton = screen.getByRole('button', { name: /ok/i });
+  await user.click(submitButton);
+
+  await waitFor(() => {
+    expect(mockAxios.get).toHaveBeenCalledWith('/courses.json');
+  });
+
+  expect(screen.getByText(/available courses/i)).toBeInTheDocument();
+});
+
 test('after logging in, renders CourseList instead of Login', async () => {
   const user = userEvent.setup();
   await renderApp();
@@ -91,7 +132,9 @@ test('after logging in, renders CourseList instead of Login', async () => {
   const submitButton = screen.getByRole('button', { name: /ok/i });
   await user.click(submitButton);
 
-  expect(screen.getByText(/available courses/i)).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByText(/available courses/i)).toBeInTheDocument();
+  });
   expect(
     screen.queryByText(/login to access the full dashboard/i)
   ).not.toBeInTheDocument();
@@ -110,7 +153,9 @@ test('after logging in then logging out, renders Login form again', async () => 
   const submitButton = screen.getByRole('button', { name: /ok/i });
   await user.click(submitButton);
 
-  expect(screen.getByText(/available courses/i)).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByText(/available courses/i)).toBeInTheDocument();
+  });
 
   await user.click(screen.getByText(/logout/i));
 
@@ -170,7 +215,9 @@ test('logIn updates user state with email, password, and isLoggedIn', async () =
   const submitButton = screen.getByRole('button', { name: /ok/i });
   await user.click(submitButton);
 
-  expect(screen.getByText(/available courses/i)).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByText(/available courses/i)).toBeInTheDocument();
+  });
   expect(screen.getByText(/test@example.com/i)).toBeInTheDocument();
 });
 
@@ -187,7 +234,9 @@ test('logOut resets user state: isLoggedIn false, email and password cleared', a
   const submitButton = screen.getByRole('button', { name: /ok/i });
   await user.click(submitButton);
 
-  expect(screen.getByText(/test@example.com/i)).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByText(/test@example.com/i)).toBeInTheDocument();
+  });
 
   await user.click(screen.getByText(/logout/i));
 
