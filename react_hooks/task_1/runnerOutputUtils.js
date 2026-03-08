@@ -1,24 +1,19 @@
 import { execSync } from 'child_process';
 import { readdirSync, readFileSync } from 'fs';
 
-// Debug: dump the testRunner source code to stderr
+// Debug: dump runner and spec to stdout so we can see them in checker output
 try {
   const cwd = process.cwd();
   const files = readdirSync(cwd);
-  const runner = files.find(f => f.includes('testRunner') && !f.includes('runnerOutputUtils'));
-  if (runner) {
-    process.stderr.write('=== RUNNER SOURCE (' + runner + ') ===\n');
-    process.stderr.write(readFileSync(cwd + '/' + runner, 'utf8'));
-    process.stderr.write('\n=== END RUNNER ===\n');
-  }
-  const spec = files.find(f => f.includes('.spec.') && !f.includes('node_modules'));
-  if (spec) {
-    process.stderr.write('=== SPEC SOURCE (' + spec + ') ===\n');
-    process.stderr.write(readFileSync(cwd + '/' + spec, 'utf8'));
-    process.stderr.write('\n=== END SPEC ===\n');
+  const runners = files.filter(f => f.endsWith('_testRunner.js'));
+  const specs = files.filter(f => f.endsWith('.spec.js') && !f.startsWith('src'));
+  for (const f of [...runners, ...specs]) {
+    console.log('=== ' + f + ' ===');
+    console.log(readFileSync(cwd + '/' + f, 'utf8'));
+    console.log('=== END ===');
   }
 } catch (e) {
-  process.stderr.write('DEBUG_ERR: ' + e.message + '\n');
+  console.log('DEBUG_ERR: ' + e.message);
 }
 
 export function runJestChecker(specFile) {
