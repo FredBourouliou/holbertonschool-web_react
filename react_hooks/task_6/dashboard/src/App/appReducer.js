@@ -24,8 +24,8 @@ export function appReducer(state = initialState, action) {
       return {
         ...state,
         user: {
-          email: action.payload.email,
-          password: action.payload.password,
+          email: action.email,
+          password: action.password,
           isLoggedIn: true,
         },
       };
@@ -46,17 +46,17 @@ export function appReducer(state = initialState, action) {
     case APP_ACTIONS.MARK_NOTIFICATION_READ:
       return {
         ...state,
-        notifications: state.notifications.filter((n) => n.id !== action.payload),
+        notifications: state.notifications.filter((n) => n.id !== action.id),
       };
     case APP_ACTIONS.SET_NOTIFICATIONS:
       return {
         ...state,
-        notifications: action.payload,
+        notifications: action.notifications,
       };
     case APP_ACTIONS.SET_COURSES:
       return {
         ...state,
-        courses: action.payload,
+        courses: action.courses,
       };
     default:
       return state;

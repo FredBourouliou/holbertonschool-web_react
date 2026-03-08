@@ -24,7 +24,7 @@ function App() {
             ...n,
             html: n.html ? { __html: getLatestNotification() } : undefined,
           }));
-          dispatch({ type: APP_ACTIONS.SET_NOTIFICATIONS, payload: data });
+          dispatch({ type: APP_ACTIONS.SET_NOTIFICATIONS, notifications: data });
         }
       } catch (error) {
         if (!cancelled) console.error(error);
@@ -41,13 +41,13 @@ function App() {
         try {
           const response = await axios.get('/courses.json');
           if (!cancelled) {
-            dispatch({ type: APP_ACTIONS.SET_COURSES, payload: response.data });
+            dispatch({ type: APP_ACTIONS.SET_COURSES, courses: response.data });
           }
         } catch (error) {
           if (!cancelled) console.error(error);
         }
       } else {
-        dispatch({ type: APP_ACTIONS.SET_COURSES, payload: [] });
+        dispatch({ type: APP_ACTIONS.SET_COURSES, courses: [] });
       }
     };
     fetchCourses();
@@ -63,7 +63,7 @@ function App() {
   }, []);
 
   const logIn = useCallback((email, password) => {
-    dispatch({ type: APP_ACTIONS.LOGIN, payload: { email, password } });
+    dispatch({ type: APP_ACTIONS.LOGIN, email, password });
   }, []);
 
   const logOut = useCallback(() => {
@@ -72,7 +72,7 @@ function App() {
 
   const markNotificationAsRead = useCallback((id) => {
     console.log(`Notification ${id} has been marked as read`);
-    dispatch({ type: APP_ACTIONS.MARK_NOTIFICATION_READ, payload: id });
+    dispatch({ type: APP_ACTIONS.MARK_NOTIFICATION_READ, id });
   }, []);
 
   return (
