@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 
 export function runJestChecker(specFile) {
   try {
-    execSync(`npx jest --no-coverage --no-verbose "${specFile}"`, {
+    execSync(`npx jest --no-coverage --silent "${specFile}"`, {
       cwd: process.cwd(),
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 25000,
