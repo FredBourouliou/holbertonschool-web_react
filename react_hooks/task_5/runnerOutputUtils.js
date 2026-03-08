@@ -1,13 +1,9 @@
 import { execSync } from 'child_process';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
 
-export function runJestChecker(specFile, cwd) {
-  const dir = cwd || dirname(fileURLToPath(import.meta.url));
-  const specPath = typeof specFile === 'string' ? resolve(dir, specFile) : specFile;
+export function runJestChecker(specFile) {
   try {
-    execSync(`npx jest --no-coverage --no-verbose "${specPath}"`, {
-      cwd: dir,
+    execSync(`npx jest --no-coverage --no-verbose "${specFile}"`, {
+      cwd: process.cwd(),
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 25000,
     });
@@ -17,10 +13,10 @@ export function runJestChecker(specFile, cwd) {
   }
 }
 
-export function runLintChecker(options) {
+export function runLintChecker() {
   try {
-    const script = typeof options === 'string' ? options : 'lint_bash.sh';
-    execSync(`bash ${script}`, {
+    execSync('bash lint_bash.sh', {
+      cwd: process.cwd(),
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 25000,
     });
