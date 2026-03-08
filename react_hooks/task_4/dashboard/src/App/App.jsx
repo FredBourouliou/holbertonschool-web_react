@@ -7,11 +7,10 @@ import Footer from '../Footer/Footer';
 import CourseList from '../CourseList/CourseList';
 import BodySection from '../BodySection/BodySection';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
-import { getLatestNotification } from '../utils/utils';
 import AppContext from '../Context/context';
 
 function App() {
-  const [displayDrawer, setDisplayDrawer] = useState(false);
+  const [displayDrawer, setDisplayDrawer] = useState(true);
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -28,7 +27,9 @@ function App() {
         if (!cancelled) {
           const data = response.data.map((n) => ({
             ...n,
-            html: n.html ? { __html: getLatestNotification() } : undefined,
+            html: n.html
+              ? (typeof n.html === 'object' ? n.html : { __html: n.html })
+              : undefined,
           }));
           setNotifications(data);
         }
