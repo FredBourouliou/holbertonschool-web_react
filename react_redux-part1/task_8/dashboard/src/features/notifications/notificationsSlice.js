@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { getLatestNotification } from '../../utils/utils';
 
-const API_BASE_URL = 'http://localhost:5173';
+const API_BASE_URL = '';
 
 const ENDPOINTS = {
   notifications: `${API_BASE_URL}/notifications.json`,

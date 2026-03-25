@@ -1,13 +1,21 @@
 import { render, screen } from '@testing-library/react';
 import WithLogging from './WithLogging';
 
+let consoleSpy;
+
+beforeEach(() => {
+  consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  consoleSpy.mockRestore();
+});
+
 function TestComponent() {
   return <p>Hello from TestComponent</p>;
 }
 
 test('logs mount and unmount messages', () => {
-  const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-
   const WrappedComponent = WithLogging(TestComponent);
   const { unmount } = render(<WrappedComponent />);
 
@@ -15,8 +23,6 @@ test('logs mount and unmount messages', () => {
 
   unmount();
   expect(consoleSpy).toHaveBeenCalledWith('Component TestComponent is going to unmount');
-
-  consoleSpy.mockRestore();
 });
 
 test('renders the wrapped component', () => {

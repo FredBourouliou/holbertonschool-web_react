@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { logout } from '../auth/authSlice';
 
-const API_BASE_URL = 'http://localhost:5173';
+const API_BASE_URL = '';
 
 const ENDPOINTS = {
   courses: `${API_BASE_URL}/courses.json`,

@@ -26,10 +26,10 @@ const mockNotifications = [
 
 beforeEach(() => {
   mockAxios.get.mockImplementation((url) => {
-    if (url.includes('notifications.json')) {
+    if (url === '/notifications.json') {
       return Promise.resolve({ data: mockNotifications });
     }
-    if (url.includes('courses.json')) {
+    if (url === '/courses.json') {
       return Promise.resolve({ data: [{ id: 1, name: 'ES6', credit: 60 }] });
     }
     return Promise.reject(new Error('Unexpected URL'));
