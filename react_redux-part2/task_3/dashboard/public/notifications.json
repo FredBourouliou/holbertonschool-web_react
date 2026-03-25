@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "author": {
+      "id": 1,
+      "name": { "first": "John", "last": "Doe" },
+      "email": "john@doe.com",
+      "picture": "http://placehold.it/32x32"
+    },
+    "context": {
+      "guid": "2d8e40be-1c78-4de0-afc9-fcc147afd4d2",
+      "isRead": false,
+      "type": "default",
+      "value": "New course available"
+    }
+  },
+  {
+    "id": 2,
+    "author": {
+      "id": 2,
+      "name": { "first": "Jane", "last": "Doe" },
+      "email": "jane@doe.com",
+      "picture": "http://placehold.it/32x32"
+    },
+    "context": {
+      "guid": "5debd764-a7b8-4b5d-89c1-b6d22e49fe5f",
+      "isRead": false,
+      "type": "urgent",
+      "value": "New resume available"
+    }
+  },
+  {
+    "id": 3,
+    "author": {
+      "id": 3,
+      "name": { "first": "Bob", "last": "Smith" },
+      "email": "bob@smith.com",
+      "picture": "http://placehold.it/32x32"
+    },
+    "context": {
+      "guid": "280913fe-38dd-4abd-8ab6-acdb4105f922",
+      "isRead": true,
+      "type": "urgent",
+      "value": "Urgent requirement - complete by EOD"
+    }
+  },
+  {
+    "id": 4,
+    "author": {
+      "id": 4,
+      "name": { "first": "Alice", "last": "Johnson" },
+      "email": "alice@johnson.com",
+      "picture": "http://placehold.it/32x32"
+    },
+    "context": {
+      "guid": "89906f88-a02d-41ee-b214-daa0c54633e3",
+      "isRead": false,
+      "type": "urgent",
+      "value": "Complete React project by Friday"
+    }
+  }
+]
